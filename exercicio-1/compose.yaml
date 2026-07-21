@@ -1,0 +1,49 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    networks:
+      - rede_publica
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=senha_secreta
+      - DB_HOST=db
+      - DB_NAME=music_db
+    networks:
+      - rede_publica
+      - rede_interna
+    depends_on:
+      db:
+        condition: service_healthy # Espera o banco estar 100% pronto antes de iniciar
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=senha_secreta
+      - POSTGRES_DB=music_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - rede_interna
+    healthcheck: # Verifica se o Postgres já aceita conexões
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+networks:
+  rede_publica:
+  rede_interna:
+    internal: true
+
+volumes:
+  pgdata:

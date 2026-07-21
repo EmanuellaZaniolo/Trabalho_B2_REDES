@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎧ྀི Catálogo de Músicas 🎧ྀི ㅤ</title>
+    <style>
+        :root {
+            --c-yellow: #FFF7CD;
+            --c-peach: #FDC3A1;
+            --c-coral: #FB9B8F;
+            --c-pink: #F57799;
+            --c-dark: #5A1E2F;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: radial-gradient(circle, var(--c-yellow) 0%, var(--c-peach) 40%, var(--c-coral) 70%, var(--c-pink) 100%), url('fundoLista.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            color: var(--c-dark);
+        }
+
+        .container { 
+            max-width: 550px; 
+            margin: auto; 
+            background: rgba(255, 247, 205, 0.92); 
+            padding: 25px; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 32px rgba(245, 119, 153, 0.3);
+            backdrop-filter: blur(4px);
+        }
+
+        h2 { margin-top: 0; color: var(--c-pink); text-align: center; }
+
+        .form-card {
+            background: #FFFFFF;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid var(--c-peach);
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] { 
+            width: 100%; 
+            padding: 10px; 
+            margin: 6px 0; 
+            box-sizing: border-box; 
+            border: 1px solid var(--c-coral);
+            border-radius: 8px;
+            outline: none;
+            background: #FFF;
+        }
+
+        button { 
+            width: 100%; 
+            padding: 10px; 
+            margin-top: 8px; 
+            background: var(--c-pink); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover { background: var(--c-coral); }
+
+        ul { list-style: none; padding: 0; }
+
+        .song-card { 
+            background: #FFFFFF; 
+            margin: 12px 0; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border-left: 6px solid var(--c-pink);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .song-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .song-title { font-size: 1.1em; font-weight: bold; color: var(--c-dark); }
+        .song-artist { font-size: 0.9em; color: #777; }
+
+        .action-bar {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .action-bar button {
+            margin-top: 0;
+            padding: 6px 12px;
+            font-size: 0.85em;
+        }
+
+        .btn-like { background: var(--c-coral); }
+        .btn-edit { background: var(--c-peach); color: var(--c-dark); }
+        .btn-delete { background: #E74C3C; }
+
+        /* Seção de comentários */
+        .comments-section {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--c-peach);
+        }
+
+        .comment-item {
+            background: var(--c-yellow);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            margin: 4px 0;
+        }
+
+        .comment-input-box {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .comment-input-box input { margin: 0; font-size: 0.85em; }
+        .comment-input-box button { width: auto; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2> Catálogo Musical 𝄞ㅤ</h2>
+        
+        <div class="form-card">
+            <input type="text" id="title" placeholder="Nome da Música">
+            <input type="text" id="artist" placeholder="Artista/Banda">
+            <button onclick="addSong()"> Adicionar Música </button>
+        </div>
+
+        <ul id="songList"></ul>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/songs';
+
+        async function fetchSongs() {
+            try {
+                const res = await fetch(API_URL);
+                const songs = await res.json();
+                const list = document.getElementById('songList');
+                
+                list.innerHTML = songs.map(song => `
+                    <li class="song-card">
+                        <div class="song-header">
+                            <div>
+                                <div class="song-title">${escapeHtml(song.title)}</div>
+                                <div class="song-artist">por ${escapeHtml(song.artist)}</div>
+                            </div>
+                        </div>
+
+                        <div class="action-bar">
+                            <button class="btn-like" onclick="likeSong(${song.id})"> 𖹭 ${song.likes || 0}</button>
+                            <button class="btn-edit" onclick="editSong(${song.id}, '${escapeHtml(song.title)}', '${escapeHtml(song.artist)}')">✏️ Editar</button>
+                            <button class="btn-delete" onclick="deleteSong(${song.id})">🗑️ Excluir</button>
+                        </div>
+
+                        <div class="comments-section">
+                            <strong> Comentários sobre a música 𓂃✍︎: (${song.comments ? song.comments.length : 0}):</strong>
+                            <div>
+                                ${(song.comments || []).map(c => `<div class="comment-item">• ${escapeHtml(c.text)}</div>`).join('')}
+                            </div>
+                            <div class="comment-input-box">
+                                <input type="text" id="comment-${song.id}" placeholder="Escreva um comentário...">
+                                <button onclick="addComment(${song.id})">Enviar</button>
+                            </div>
+                        </div>
+                    </li>
+                `).join('');
+            } catch (err) {
+                console.error("Erro ao carregar músicas:", err);
+            }
+        }
+
+        async function addSong() {
+            const title = document.getElementById('title').value;
+            const artist = document.getElementById('artist').value;
+            if(!title || !artist) return alert("Preencha todos os campos!");
+
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, artist })
+            });
+
+            document.getElementById('title').value = '';
+            document.getElementById('artist').value = '';
+            fetchSongs();
+        }
+
+        async function editSong(id, currentTitle, currentArtist) {
+            const title = prompt("Novo título da música:", currentTitle);
+            const artist = prompt("Novo artista/banda:", currentArtist);
+            
+            if(!title || !artist) return;
+
+            await fetch(`${API_URL}/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, artist })
+            });
+
+            fetchSongs();
+        }
+
+        async function deleteSong(id) {
+            if(!confirm("Tem certeza que deseja remover esta música?")) return;
+
+            await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+            fetchSongs();
+        }
+
+        async function likeSong(id) {
+            await fetch(`${API_URL}/${id}/like`, { method: 'POST' });
+            fetchSongs();
+        }
+
+        async function addComment(songId) {
+            const input = document.getElementById(`comment-${songId}`);
+            const text = input.value;
+            if(!text) return alert("Digite algo para comentar!");
+
+            await fetch(`${API_URL}/${songId}/comments`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+
+            input.value = '';
+            fetchSongs();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+        }
+
+        fetchSongs();
+    </script>
+</body>
+</html>

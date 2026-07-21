@@ -1,0 +1,13 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    ports:
+      - "4533:4533"
+    env_file:
+      - .env
+    volumes:
+      - navidrome_data:/data
+      - ./musicas:/music # <-- MUDOU AQUI: Agora aponta para a pasta "musicas" do seu PC
+
+volumes:
+  navidrome_data:
