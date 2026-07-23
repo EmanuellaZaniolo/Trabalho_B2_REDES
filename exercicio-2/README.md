@@ -1,15 +1,44 @@
-# Navidrome - Servidor de Música Pessoal
+# Linkding - Gerenciador de Marcadores (Bookmarks)
 
-O [Navidrome](https://www.navidrome.org/) é um servidor open-source que permite hospedar sua própria coleção de músicas e ouvi-la via navegador ou aplicativos mobile.
+Imagem utilizada: [`sissbruecker/linkding`](https://hub.docker.com/r/sissbruecker/linkding)
 
-## Como rodar
-1. Na raiz da pasta, execute: `docker compose up -d`
-2. Acesse a aplicação em: `http://localhost:4533`
-3. Na primeira vez que você acessar, ele pedirá para criar um usuário admin (os dados ficam salvos permanentemente graças ao volume).
+O [linkding](https://github.com/sissbruecker/linkding) é uma aplicação web open-source para organizar,
+marcar com tags e pesquisar links salvos (bookmarks), funcionando como um "favoritos" centralizado
+acessível de qualquer navegador.
+
+## Como executar
+
+1. Na raiz desta pasta, execute:
+   ```bash
+   docker compose up -d
+   ```
+2. Acesse a aplicação em: `http://localhost:9090`
+3. Faça login com o usuário administrador definido no `.env` (por padrão: `admin` / `Redes2026!`).
+
+Nenhum passo manual adicional é necessário: o usuário administrador é criado automaticamente na
+primeira inicialização a partir das variáveis definidas no `.env`.
 
 ## Configurações realizadas
-- **Imagem Oficial**: `deluan/navidrome:latest` do Docker Hub.
-- **Volumes**:
-  - `navidrome_data`: Salva o banco interno SQLite e os usuários.
-  - `navidrome_music`: Mapeia a pasta onde os arquivos `.mp3` ficariam.
-- **Variáveis (.env)**: Configuram o tempo de expiração da sessão, habilitam transcodificação de arquivos e definem o tema escuro como padrão.
+
+- **Imagem oficial**: `sissbruecker/linkding:1.45.0`, publicada no Docker Hub.
+- **Porta**: apenas a porta `9090` (interface web) é exposta para o host.
+- **Volume nomeado**: `linkding_data`, mapeado em `/etc/linkding/data` dentro do container. É onde o
+  linkding guarda seu banco de dados SQLite com todos os bookmarks, tags e usuários — garantindo que os
+  dados sobrevivam a um `docker compose down` seguido de `docker compose up`.
+- **Variáveis de ambiente (`.env`)**:
+  - `LD_SUPERUSER_NAME`, `LD_SUPERUSER_PASSWORD`, `LD_SUPERUSER_EMAIL`: criam automaticamente o usuário
+    administrador no primeiro start (sem precisar rodar comandos manuais dentro do container).
+  - `LD_DISABLE_BACKGROUND_TASKS`: desativa a criação automática de snapshots no Wayback Machine para
+    cada bookmark salvo (opcional, mantido desativado para simplificar).
+
+## Testando a persistência dos dados
+
+1. Suba o ambiente e faça login.
+2. Adicione alguns bookmarks pela interface.
+3. Rode:
+   ```bash
+   docker compose down
+   docker compose up -d
+   ```
+4. Acesse novamente `http://localhost:9090` e confirme que os bookmarks continuam lá — os dados
+   persistem graças ao volume nomeado `linkding_data`.

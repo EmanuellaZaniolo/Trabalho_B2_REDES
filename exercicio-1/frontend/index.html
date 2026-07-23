@@ -3,250 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎧ྀི Catálogo de Músicas 🎧ྀི ㅤ</title>
+    <title>Catálogo de Recomendações</title>
+    
+    <!-- Importando a fonte Poppins para um visual mais Aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
-        :root {
-            --c-yellow: #FFF7CD;
-            --c-peach: #FDC3A1;
-            --c-coral: #FB9B8F;
-            --c-pink: #F57799;
-            --c-dark: #5A1E2F;
-        }
-
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: radial-gradient(circle, var(--c-yellow) 0%, var(--c-peach) 40%, var(--c-coral) 70%, var(--c-pink) 100%), url('fundoLista.jpg') no-repeat center center fixed;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('fundoLista.jpg') no-repeat center center fixed;
             background-size: cover;
-            min-height: 100vh;
-            color: var(--c-dark);
+            color: #4a4a4a;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
         }
 
-        .container { 
-            max-width: 550px; 
-            margin: auto; 
-            background: rgba(255, 247, 205, 0.92); 
-            padding: 25px; 
-            border-radius: 16px; 
-            box-shadow: 0 8px 32px rgba(245, 119, 153, 0.3);
-            backdrop-filter: blur(4px);
+        /* Efeito de vidro (Glassmorphism) para suavizar o fundo e destacar a paleta */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px); /* Desfoque aesthetic */
+            z-index: -1;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #FF5D5D; /* Cor mais forte da paleta */
+            text-shadow: 2px 2px 0px #FFE3A9; /* Sombra com o amarelo pastel */
+            font-size: 2.8em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
         }
 
-        h2 { margin-top: 0; color: var(--c-pink); text-align: center; }
+        .form-container {
+            background: rgba(255, 255, 255, 0.85); /* Fundo branco translúcido */
+            padding: 30px;
+            border-radius: 20px; /* Bordas bem arredondadas */
+            box-shadow: 0 10px 30px rgba(255, 93, 93, 0.15); /* Sombra suave vermelha */
+            margin-bottom: 40px;
+            border: 2px solid #FFC3C3; /* Borda rosa claro */
+            backdrop-filter: blur(10px);
+        }
 
-        .form-card {
-            background: #FFFFFF;
+        .form-container h3 {
+            margin-top: 0;
+            color: #FF8C8C; /* Rosa médio */
+            font-weight: 600;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        label {
+            font-weight: 600;
+            color: #FF5D5D;
+            font-size: 0.95em;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0 25px 0;
+            border: 2px solid #FFE3A9; /* Borda amarela pastel */
+            border-radius: 12px;
+            box-sizing: border-box;
+            background-color: #fff;
+            color: #555;
+            font-size: 1em;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #FF8C8C;
+            box-shadow: 0 0 10px rgba(255, 140, 140, 0.2);
+        }
+
+        button {
+            width: 100%;
+            /* Degradê usando as duas cores mais fortes */
+            background: linear-gradient(135deg, #FF8C8C, #FF5D5D);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 18px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 93, 93, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 93, 93, 0.4);
+        }
+
+        .recomendacao-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-left: 8px solid #FF5D5D; /* Destaque lateral */
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(255, 195, 195, 0.4);
+            border-top: 1px solid #FFC3C3;
+            border-right: 1px solid #FFC3C3;
+            border-bottom: 1px solid #FFC3C3;
+            transition: transform 0.2s;
+        }
+
+        .recomendacao-card:hover {
+            transform: scale(1.02); /* Leve animação ao passar o mouse */
+        }
+
+        .recomendacao-titulo {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #FF5D5D;
+            margin-bottom: 8px;
+        }
+
+        .recomendacao-categoria {
+            font-size: 0.85em;
+            color: #FF5D5D;
+            background-color: #FFE3A9; /* Tag amarela */
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px; /* Estilo pílula */
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .recomendacao-observacao {
+            background: rgba(255, 195, 195, 0.3); /* Rosa bem clarinho com transparência */
             padding: 15px;
             border-radius: 12px;
-            border: 2px solid var(--c-peach);
-            margin-bottom: 20px;
+            font-size: 0.95em;
+            color: #4a4a4a;
+            border-left: 4px solid #FF8C8C;
         }
-
-        input[type="text"] { 
-            width: 100%; 
-            padding: 10px; 
-            margin: 6px 0; 
-            box-sizing: border-box; 
-            border: 1px solid var(--c-coral);
-            border-radius: 8px;
-            outline: none;
-            background: #FFF;
-        }
-
-        button { 
-            width: 100%; 
-            padding: 10px; 
-            margin-top: 8px; 
-            background: var(--c-pink); 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        button:hover { background: var(--c-coral); }
-
-        ul { list-style: none; padding: 0; }
-
-        .song-card { 
-            background: #FFFFFF; 
-            margin: 12px 0; 
-            padding: 15px; 
-            border-radius: 12px; 
-            border-left: 6px solid var(--c-pink);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-
-        .song-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .song-title { font-size: 1.1em; font-weight: bold; color: var(--c-dark); }
-        .song-artist { font-size: 0.9em; color: #777; }
-
-        .action-bar {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .action-bar button {
-            margin-top: 0;
-            padding: 6px 12px;
-            font-size: 0.85em;
-        }
-
-        .btn-like { background: var(--c-coral); }
-        .btn-edit { background: var(--c-peach); color: var(--c-dark); }
-        .btn-delete { background: #E74C3C; }
-
-        /* Seção de comentários */
-        .comments-section {
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px dashed var(--c-peach);
-        }
-
-        .comment-item {
-            background: var(--c-yellow);
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 0.85em;
-            margin: 4px 0;
-        }
-
-        .comment-input-box {
-            display: flex;
-            gap: 6px;
-            margin-top: 8px;
-        }
-
-        .comment-input-box input { margin: 0; font-size: 0.85em; }
-        .comment-input-box button { width: auto; font-size: 0.85em; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2> Catálogo Musical 𝄞ㅤ</h2>
-        
-        <div class="form-card">
-            <input type="text" id="title" placeholder="Nome da Música">
-            <input type="text" id="artist" placeholder="Artista/Banda">
-            <button onclick="addSong()"> Adicionar Música </button>
-        </div>
 
-        <ul id="songList"></ul>
+    <h1>Catálogo de Recomendações</h1>
+
+    <div class="form-container">
+        <h3>Adicionar Nova Recomendação</h3>
+        <form id="formRecomendacao">
+            <label for="titulo">Título da Obra:</label>
+            <input type="text" id="titulo" placeholder="Ex: Forrest Gump - Frank ocean" required>
+
+            <label for="categoria">Categoria:</label>
+            <select id="categoria" required>
+                <option value="🎵 Música">🎵 Música</option>
+                <option value="🎬 Filme">🎬 Filme</option>
+                <option value="📺 Série">📺 Série</option>
+                <option value="📚 Livro">📚 Livro</option>
+                <option value="🎮 Jogo">🎮 Jogo</option>
+                <option value="🎧 Podcast">🎧 Podcast</option>
+            </select>
+
+            <label for="observacao">Observações:</label>
+            <textarea id="observacao" rows="3" placeholder="Amo essa música! minha fav " required></textarea>
+
+            <button type="submit">Adicionar ao Catálogo</button>
+        </form>
+    </div>
+
+    <div id="listaRecomendacoes">
+        <!-- As recomendações aparecerão aqui -->
     </div>
 
     <script>
-        const API_URL = 'http://localhost:3000/songs';
+        const API_URL = 'http://localhost:3000/api/recomendacoes';
 
-        async function fetchSongs() {
+        async function carregarRecomendacoes() {
             try {
-                const res = await fetch(API_URL);
-                const songs = await res.json();
-                const list = document.getElementById('songList');
+                const response = await fetch(API_URL);
+                const recomendacoes = await response.json();
                 
-                list.innerHTML = songs.map(song => `
-                    <li class="song-card">
-                        <div class="song-header">
-                            <div>
-                                <div class="song-title">${escapeHtml(song.title)}</div>
-                                <div class="song-artist">por ${escapeHtml(song.artist)}</div>
-                            </div>
-                        </div>
-
-                        <div class="action-bar">
-                            <button class="btn-like" onclick="likeSong(${song.id})"> 𖹭 ${song.likes || 0}</button>
-                            <button class="btn-edit" onclick="editSong(${song.id}, '${escapeHtml(song.title)}', '${escapeHtml(song.artist)}')">✏️ Editar</button>
-                            <button class="btn-delete" onclick="deleteSong(${song.id})">🗑️ Excluir</button>
-                        </div>
-
-                        <div class="comments-section">
-                            <strong> Comentários sobre a música 𓂃✍︎: (${song.comments ? song.comments.length : 0}):</strong>
-                            <div>
-                                ${(song.comments || []).map(c => `<div class="comment-item">• ${escapeHtml(c.text)}</div>`).join('')}
-                            </div>
-                            <div class="comment-input-box">
-                                <input type="text" id="comment-${song.id}" placeholder="Escreva um comentário...">
-                                <button onclick="addComment(${song.id})">Enviar</button>
-                            </div>
-                        </div>
-                    </li>
-                `).join('');
-            } catch (err) {
-                console.error("Erro ao carregar músicas:", err);
+                const lista = document.getElementById('listaRecomendacoes');
+                lista.innerHTML = ''; 
+                
+                recomendacoes.reverse().forEach(rec => {
+                    const card = document.createElement('div');
+                    card.className = 'recomendacao-card';
+                    card.innerHTML = `
+                        <div class="recomendacao-titulo">${rec.titulo}</div>
+                        <div class="recomendacao-categoria">${rec.categoria}</div>
+                        <div class="recomendacao-observacao"><strong>Comentário:</strong><br> ${rec.observacao}</div>
+                    `;
+                    lista.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar recomendações:', error);
             }
         }
 
-        async function addSong() {
-            const title = document.getElementById('title').value;
-            const artist = document.getElementById('artist').value;
-            if(!title || !artist) return alert("Preencha todos os campos!");
+        document.getElementById('formRecomendacao').addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-            await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, artist })
-            });
+            const titulo = document.getElementById('titulo').value;
+            const categoria = document.getElementById('categoria').value;
+            const observacao = document.getElementById('observacao').value;
 
-            document.getElementById('title').value = '';
-            document.getElementById('artist').value = '';
-            fetchSongs();
-        }
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ titulo, categoria, observacao })
+                });
 
-        async function editSong(id, currentTitle, currentArtist) {
-            const title = prompt("Novo título da música:", currentTitle);
-            const artist = prompt("Novo artista/banda:", currentArtist);
-            
-            if(!title || !artist) return;
+                document.getElementById('formRecomendacao').reset();
+                carregarRecomendacoes();
+            } catch (error) {
+                console.error('Erro ao adicionar recomendação:', error);
+            }
+        });
 
-            await fetch(`${API_URL}/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, artist })
-            });
-
-            fetchSongs();
-        }
-
-        async function deleteSong(id) {
-            if(!confirm("Tem certeza que deseja remover esta música?")) return;
-
-            await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-            fetchSongs();
-        }
-
-        async function likeSong(id) {
-            await fetch(`${API_URL}/${id}/like`, { method: 'POST' });
-            fetchSongs();
-        }
-
-        async function addComment(songId) {
-            const input = document.getElementById(`comment-${songId}`);
-            const text = input.value;
-            if(!text) return alert("Digite algo para comentar!");
-
-            await fetch(`${API_URL}/${songId}/comments`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text })
-            });
-
-            input.value = '';
-            fetchSongs();
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-        }
-
-        fetchSongs();
+        carregarRecomendacoes();
     </script>
 </body>
 </html>

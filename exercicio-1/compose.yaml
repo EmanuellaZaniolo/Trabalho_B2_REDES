@@ -1,49 +1,48 @@
 services:
   frontend:
     build: ./frontend
+    container_name: catalogo_frontend
     ports:
       - "8080:80"
     networks:
-      - rede_publica
+      - rede_front
     depends_on:
       - backend
 
   backend:
     build: ./backend
+    container_name: catalogo_backend
     ports:
       - "3000:3000"
     environment:
       - DB_USER=postgres
-      - DB_PASSWORD=senha_secreta
+      - DB_PASSWORD=senha_banco_123
       - DB_HOST=db
-      - DB_NAME=music_db
+      - DB_NAME=catalogo_db
     networks:
-      - rede_publica
-      - rede_interna
+      - rede_front
+      - rede_db
     depends_on:
-      db:
-        condition: service_healthy # Espera o banco estar 100% pronto antes de iniciar
+      - db
 
   db:
     image: postgres:15-alpine
+    container_name: catalogo_db
+    restart: always
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=senha_secreta
-      - POSTGRES_DB=music_db
+      - POSTGRES_PASSWORD=senha_banco_123
+      - POSTGRES_DB=catalogo_db
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - db_data_catalogo:/var/lib/postgresql/data
     networks:
-      - rede_interna
-    healthcheck: # Verifica se o Postgres já aceita conexões
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 3s
-      timeout: 3s
-      retries: 5
-
-networks:
-  rede_publica:
-  rede_interna:
-    internal: true
+      - rede_db
 
 volumes:
-  pgdata:
+  db_data_catalogo:
+
+networks:
+  rede_front:
+    driver: bridge
+  rede_db:
+    internal: true
