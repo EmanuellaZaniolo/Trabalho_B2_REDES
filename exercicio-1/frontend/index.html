@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Recomendações 🌟</title>
+    <title>Catálogo de Recomendações</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Usa a imagem original de fundo e a fixa na tela */
-            background: url('fundoLista.jpg') no-repeat center center fixed;
+          
+            background: #FEC288 url('./FundoLista.png') no-repeat center center fixed;
             background-size: cover;
-            color: #ecf0f1;
+            
+            color: #333;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
@@ -18,54 +19,51 @@
         
         h1 {
             text-align: center;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            color: #FA5C5C;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
             font-size: 2.5em;
             margin-bottom: 30px;
         }
 
-        /* Fundo escuro semi-transparente para dar destaque ao conteúdo sem esconder a imagem */
         .form-container {
-            background: rgba(30, 30, 30, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             margin-bottom: 30px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 3px solid #FD8A6B;
         }
 
         .form-container h3 {
             margin-top: 0;
-            color: #3498db;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            color: #FA5C5C;
         }
 
         label {
             font-weight: bold;
-            color: #bdc3c7;
+            color: #FD8A6B;
         }
 
         input, select, textarea {
             width: 100%;
             padding: 12px;
             margin: 8px 0 20px 0;
-            border: 1px solid #555;
+            border: 2px solid #FEC288;
             border-radius: 6px;
             box-sizing: border-box;
-            background-color: rgba(0, 0, 0, 0.6);
-            color: #fff;
+            background-color: #fff;
+            color: #333;
             font-size: 1em;
+            outline: none;
         }
 
-        /* Corrige a cor das opções no select para não ficarem invisíveis */
-        select option {
-            background-color: #2c3e50; 
-            color: #fff;
+        input:focus, select:focus, textarea:focus {
+            border-color: #FA5C5C;
         }
 
         button {
             width: 100%;
-            background-color: #e74c3c;
+            background-color: #FA5C5C;
             color: white;
             border: none;
             padding: 15px;
@@ -74,60 +72,56 @@
             font-weight: bold;
             font-size: 18px;
             transition: background-color 0.3s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         button:hover {
-            background-color: #c0392b;
+            background-color: #FD8A6B;
         }
 
         .recomendacao-card {
-            background: rgba(30, 30, 30, 0.85);
+            background: #FBEF76;
             padding: 20px;
-            border-left: 5px solid #e74c3c;
+            border-left: 6px solid #FA5C5C;
             border-radius: 8px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-right: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
         .recomendacao-titulo {
             font-size: 1.5em;
             font-weight: bold;
-            color: #3498db;
+            color: #FA5C5C;
             margin-bottom: 5px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .recomendacao-categoria {
             font-size: 0.9em;
-            color: #bdc3c7;
+            color: #FD8A6B;
             margin-bottom: 15px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            font-weight: bold;
         }
 
         .recomendacao-observacao {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(254, 194, 136, 0.4);
             padding: 15px;
             border-radius: 6px;
             font-style: italic;
-            color: #ecf0f1;
-            border-left: 3px solid #3498db;
+            color: #333;
+            border-left: 3px solid #FD8A6B;
         }
     </style>
 </head>
 <body>
 
-    <h1>💡 Catálogo de Recomendações 🍿</h1>
+    <h1>Catálogo de Recomendações</h1>
 
     <div class="form-container">
         <h3>Adicionar Nova Recomendação</h3>
         <form id="formRecomendacao">
             <label for="titulo">Título da Obra (Filme, Livro, Música, etc.):</label>
-            <input type="text" id="titulo" placeholder="Ex: O Senhor dos Anéis 💍" required>
+            <input type="text" id="titulo" placeholder="Ex: Forrest Gump - Frank Ocean" required>
 
             <label for="categoria">Categoria:</label>
             <select id="categoria" required>
@@ -140,9 +134,9 @@
             </select>
 
             <label for="observacao">Observações:</label>
-            <textarea id="observacao" rows="3" placeholder="Insira suas observações sobre esta recomendação..." required></textarea>
+            <textarea id="observacao" rows="3" placeholder="Amo essa musica mds" required></textarea>
 
-            <button type="submit">Adicionar ao Catálogo 🚀</button>
+            <button type="submit">Adicionar ao Catálogo</button>
         </form>
     </div>
 
@@ -151,16 +145,16 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:3000/api/recomendacoes';
+       
+        const API_URL = 'http://localhost:3000/api/recomendacoes'; 
 
-        // Função para carregar as recomendações do backend
         async function carregarRecomendacoes() {
             try {
                 const response = await fetch(API_URL);
                 const recomendacoes = await response.json();
                 
                 const lista = document.getElementById('listaRecomendacoes');
-                lista.innerHTML = ''; // Limpa a lista antes de carregar
+                lista.innerHTML = ''; 
                 
                 recomendacoes.reverse().forEach(rec => {
                     const card = document.createElement('div');
@@ -168,7 +162,7 @@
                     card.innerHTML = `
                         <div class="recomendacao-titulo">${rec.titulo}</div>
                         <div class="recomendacao-categoria">${rec.categoria}</div>
-                        <div class="recomendacao-observacao"><strong>📌 Observações:</strong> ${rec.observacao}</div>
+                        <div class="recomendacao-observacao"><strong>Observações:</strong> ${rec.observacao}</div>
                     `;
                     lista.appendChild(card);
                 });
@@ -177,7 +171,6 @@
             }
         }
 
-        // Função para adicionar uma nova recomendação
         document.getElementById('formRecomendacao').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -188,13 +181,10 @@
             try {
                 await fetch(API_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ titulo, categoria, observacao })
                 });
 
-                // Limpa o formulário e recarrega a lista
                 document.getElementById('formRecomendacao').reset();
                 carregarRecomendacoes();
             } catch (error) {
@@ -202,7 +192,6 @@
             }
         });
 
-        // Carrega a lista ao abrir a página
         carregarRecomendacoes();
     </script>
 </body>
