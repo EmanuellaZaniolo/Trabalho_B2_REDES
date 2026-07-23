@@ -4,282 +4,226 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Recomendações</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Lato', sans-serif;
-            background: linear-gradient(180deg, #FEC288 0%, #FBEF76 50%, #FEC288 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            padding: 40px 20px;
-            color: #333;
-        }
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-        /* Overlay com imagem de fundo */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('./fundoLista.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
+            background: #FEC288 url('./fundoLista.jpg') no-repeat center center fixed;
             background-size: cover;
-            opacity: 0.12;
-            z-index: -1;
-            pointer-events: none;
-        }
 
-        .container {
-            max-width: 1000px;
+            color: #333;
+            max-width: 800px;
             margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 50px;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(250, 92, 92, 0.15);
-            border-top: 5px solid #FA5C5C;
-            border-bottom: 5px solid #FD8A6B;
+            padding: 20px;
         }
 
         h1 {
-            font-family: 'Playfair Display', serif;
+            text-align: center;
             color: #FA5C5C;
-            font-size: 3em;
-            margin-bottom: 10px;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        .subtitle {
-            color: #FD8A6B;
-            font-size: 1.2em;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-        }
-
-        .content-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            align-items: start;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+            font-size: 2.5em;
+            margin-bottom: 30px;
         }
 
         .form-container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(253, 138, 107, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
             border: 3px solid #FD8A6B;
-            border-top: 6px solid #FA5C5C;
-            height: fit-content;
-            position: sticky;
-            top: 20px;
         }
 
         .form-container h3 {
             margin-top: 0;
-            margin-bottom: 25px;
             color: #FA5C5C;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.7em;
-            font-weight: 700;
         }
 
         label {
-            font-weight: 600;
+            font-weight: bold;
             color: #FD8A6B;
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.95em;
         }
 
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            margin-bottom: 18px;
+            margin: 8px 0 20px 0;
             border: 2px solid #FEC288;
-            border-radius: 8px;
+            border-radius: 6px;
             box-sizing: border-box;
             background-color: #fff;
             color: #333;
             font-size: 1em;
-            font-family: 'Lato', sans-serif;
             outline: none;
-            transition: all 0.3s ease;
         }
 
         input:focus, select:focus, textarea:focus {
             border-color: #FA5C5C;
-            box-shadow: 0 0 0 3px rgba(250, 92, 92, 0.1);
-            background-color: #fffbf0;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 90px;
         }
 
         button {
             width: 100%;
-            background: linear-gradient(135deg, #FA5C5C 0%, #FD8A6B 100%);
+            background-color: #FA5C5C;
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 700;
-            font-size: 1.05em;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(250, 92, 92, 0.3);
-            font-family: 'Lato', sans-serif;
-            letter-spacing: 0.5px;
+            font-weight: bold;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(250, 92, 92, 0.4);
-            background: linear-gradient(135deg, #FD8A6B 0%, #FA5C5C 100%);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .lista-container {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+            background-color: #FD8A6B;
         }
 
         .recomendacao-card {
-            background: rgba(255, 255, 255, 0.98);
-            padding: 22px;
+            background: #FBEF76;
+            padding: 20px;
             border-left: 6px solid #FA5C5C;
-            border-radius: 10px;
-            box-shadow: 0 6px 16px rgba(250, 92, 92, 0.2);
-            transition: all 0.3s ease;
-            border-right: 3px solid #FD8A6B;
-            border-top: 2px solid #FEC288;
-        }
-
-        .recomendacao-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 8px 22px rgba(250, 92, 92, 0.3);
-            border-left-color: #FEC288;
-            border-right-color: #FA5C5C;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
         .recomendacao-titulo {
-            font-family: 'Playfair Display', serif;
             font-size: 1.5em;
-            font-weight: 700;
+            font-weight: bold;
             color: #FA5C5C;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
+            margin-bottom: 5px;
         }
 
         .recomendacao-categoria {
-            font-size: 0.85em;
+            font-size: 0.9em;
             color: #FD8A6B;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-weight: bold;
         }
 
         .recomendacao-observacao {
-            background: rgba(254, 194, 136, 0.15);
-            padding: 14px;
+            background: rgba(254, 194, 136, 0.4);
+            padding: 15px;
             border-radius: 6px;
             font-style: italic;
             color: #333;
             border-left: 3px solid #FD8A6B;
-            line-height: 1.5;
-            font-size: 0.95em;
         }
 
-        .recomendacao-observacao strong {
-            color: #FA5C5C;
-            font-style: normal;
-            font-weight: 700;
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
         }
 
-        /* Responsivo */
-        @media (max-width: 1024px) {
-            .content-wrapper {
-                grid-template-columns: 1fr;
-            }
-
-            .form-container {
-                position: static;
-                top: auto;
-            }
-
-            h1 {
-                font-size: 2.5em;
-            }
+        .card-actions button {
+            padding: 8px;
+            font-size: 14px;
         }
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
+        .btn-editar {
+            background-color: #4A90D9;
+        }
+        .btn-editar:hover {
+            background-color: #6FAEE8;
+        }
 
-            .header {
-                padding: 20px;
-                margin-bottom: 30px;
-            }
+        .btn-excluir {
+            background-color: #B0453A;
+        }
+        .btn-excluir:hover {
+            background-color: #D45C4F;
+        }
 
-            .form-container {
-                padding: 20px;
-            }
-
-            .recomendacao-titulo {
-                font-size: 1.3em;
-            }
-
-            .subtitle {
-                font-size: 1em;
-            }
-
-            .content-wrapper {
-                gap: 20px;
-            }
+        .card-edit-form input,
+        .card-edit-form select,
+        .card-edit-form textarea {
+            margin: 6px 0 12px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Catálogo de Recomendações</h1>
-            <p class="subtitle">Suas obras favoritas em um só lugar</p>
-        </div>
 
-        <div class="content-wrapper">
-            <div class="form-container">
-                <h3>Adicionar Nova Recomendação</h3>
-                <form id="formRecomendacao">
-                    <label for="titulo">Título da Obra:</label>
-                    <input type="text" id="titulo" placeholder="Ex: Forrest Gump - Frank Ocean" required>
+    <h1>Catálogo de Recomendações</h1>
 
-                    <label for="categoria">Categoria:</label>
-                    <select id="categoria" required>
+    <div class="form-container">
+        <h3>Adicionar Nova Recomendação</h3>
+        <form id="formRecomendacao">
+            <label for="titulo">Título da Obra (Filme, Livro, Música, etc.):</label>
+            <input type="text" id="titulo" placeholder="Ex: Forrest Gump - Frank Ocean" required>
+
+            <label for="categoria">Categoria:</label>
+            <select id="categoria" required>
+                <option value="🎵 Música">🎵 Música</option>
+                <option value="🎬 Filme">🎬 Filme</option>
+                <option value="📺 Série">📺 Série</option>
+                <option value="📚 Livro">📚 Livro</option>
+                <option value="🎮 Jogo">🎮 Jogo</option>
+                <option value="🎧 Podcast">🎧 Podcast</option>
+            </select>
+
+            <label for="observacao">Observações:</label>
+            <textarea id="observacao" rows="3" placeholder="Amo essa musica mds" required></textarea>
+
+            <button type="submit">Adicionar ao Catálogo</button>
+        </form>
+    </div>
+
+    <div id="listaRecomendacoes">
+        <!-- As recomendações aparecerão aqui -->
+    </div>
+
+    <script>
+
+        // URL relativa: o Nginx do próprio frontend faz o proxy para o
+        // container do backend através da rede interna do Docker.
+        const API_URL = '/api/recomendacoes';
+
+        async function carregarRecomendacoes() {
+            try {
+                const response = await fetch(API_URL);
+                const recomendacoes = await response.json();
+
+                const lista = document.getElementById('listaRecomendacoes');
+                lista.innerHTML = '';
+
+                recomendacoes.reverse().forEach(rec => {
+                    const card = document.createElement('div');
+                    card.className = 'recomendacao-card';
+                    card.dataset.id = rec.id;
+                    renderView(card, rec);
+                    lista.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar recomendações:', error);
+            }
+        }
+
+        function renderView(card, rec) {
+            card.innerHTML = `
+                <div class="recomendacao-titulo">${rec.titulo}</div>
+                <div class="recomendacao-categoria">${rec.categoria}</div>
+                <div class="recomendacao-observacao"><strong>Observações:</strong> ${rec.observacao}</div>
+                <div class="card-actions">
+                    <button type="button" class="btn-editar">Editar</button>
+                    <button type="button" class="btn-excluir">Excluir</button>
+                </div>
+            `;
+
+            card.querySelector('.btn-editar').addEventListener('click', () => renderEdit(card, rec));
+            card.querySelector('.btn-excluir').addEventListener('click', () => excluirRecomendacao(rec.id));
+        }
+
+        function renderEdit(card, rec) {
+            card.innerHTML = `
+                <form class="card-edit-form">
+                    <label>Título:</label>
+                    <input type="text" class="edit-titulo" value="${rec.titulo}" required>
+
+                    <label>Categoria:</label>
+                    <select class="edit-categoria" required>
                         <option value="🎵 Música">🎵 Música</option>
                         <option value="🎬 Filme">🎬 Filme</option>
                         <option value="📺 Série">📺 Série</option>
@@ -288,42 +232,50 @@
                         <option value="🎧 Podcast">🎧 Podcast</option>
                     </select>
 
-                    <label for="observacao">Observações:</label>
-                    <textarea id="observacao" placeholder="Compartilhe suas impressões..." required></textarea>
+                    <label>Observações:</label>
+                    <textarea class="edit-observacao" rows="3" required>${rec.observacao}</textarea>
 
-                    <button type="submit">Adicionar ao Catálogo</button>
+                    <div class="card-actions">
+                        <button type="submit">Salvar</button>
+                        <button type="button" class="btn-cancelar">Cancelar</button>
+                    </div>
                 </form>
-            </div>
+            `;
 
-            <div id="listaRecomendacoes" class="lista-container">
-                <!-- As recomendações aparecerão aqui -->
-            </div>
-        </div>
-    </div>
+            card.querySelector('.edit-categoria').value = rec.categoria;
 
-    <script>
-        const API_URL = 'http://localhost:3000/api/recomendacoes'; 
+            card.querySelector('.card-edit-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const atualizado = {
+                    titulo: card.querySelector('.edit-titulo').value,
+                    categoria: card.querySelector('.edit-categoria').value,
+                    observacao: card.querySelector('.edit-observacao').value,
+                };
+                await atualizarRecomendacao(rec.id, atualizado);
+            });
 
-        async function carregarRecomendacoes() {
+            card.querySelector('.btn-cancelar').addEventListener('click', () => renderView(card, rec));
+        }
+
+        async function atualizarRecomendacao(id, dados) {
             try {
-                const response = await fetch(API_URL);
-                const recomendacoes = await response.json();
-                
-                const lista = document.getElementById('listaRecomendacoes');
-                lista.innerHTML = ''; 
-                
-                recomendacoes.reverse().forEach(rec => {
-                    const card = document.createElement('div');
-                    card.className = 'recomendacao-card';
-                    card.innerHTML = `
-                        <div class="recomendacao-titulo">${rec.titulo}</div>
-                        <div class="recomendacao-categoria">${rec.categoria}</div>
-                        <div class="recomendacao-observacao"><strong>Observações:</strong> ${rec.observacao}</div>
-                    `;
-                    lista.appendChild(card);
+                await fetch(`${API_URL}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
                 });
+                carregarRecomendacoes();
             } catch (error) {
-                console.error('Erro ao carregar recomendações:', error);
+                console.error('Erro ao atualizar recomendação:', error);
+            }
+        }
+
+        async function excluirRecomendacao(id) {
+            try {
+                await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                carregarRecomendacoes();
+            } catch (error) {
+                console.error('Erro ao excluir recomendação:', error);
             }
         }
 

@@ -1,36 +1,29 @@
-version: '3.8'
-
 services:
-  # Serviço Frontend - Interface web com Proxy Reverso
   frontend:
     build: ./frontend
     container_name: app_frontend
     ports:
-      - "8080:80"  # ÚNICA porta exposta para o host
+      - "8080:80"
     networks:
       - rede_front
     depends_on:
       - backend
-    restart: unless-stopped
 
-  # Serviço Backend - API REST (SEM porta exposta para o host)
   backend:
     build: ./backend
     container_name: app_backend
-    # Nota: SEM "ports" - o backend só é acessível via Proxy Reverso do Nginx
     environment:
       - DB_USER=postgres
       - DB_PASSWORD=senha_banco
       - DB_HOST=db
       - DB_NAME=catalogo_db
     networks:
-      - rede_front  # Comunica com frontend (via Nginx)
-      - rede_db     # Comunica com banco de dados
+      - rede_front
+      - rede_db
     depends_on:
-      - db
-    restart: unless-stopped
+      db:
+        condition: service_healthy
 
-  # Serviço Banco de Dados - PostgreSQL com persistência
   db:
     image: postgres:15-alpine
     container_name: app_db
@@ -43,8 +36,12 @@ services:
       - db_data:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - rede_db  # Rede interna: conectado apenas ao backend
-    # SEM "ports" - o banco NÃO é exposto para o host
+      - rede_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   db_data:
@@ -52,7 +49,5 @@ volumes:
 networks:
   rede_front:
     driver: bridge
-
   rede_db:
-    driver: bridge
-    internal: true  # Rede interna: nenhuma saída para fora do cluster
+    internal: true

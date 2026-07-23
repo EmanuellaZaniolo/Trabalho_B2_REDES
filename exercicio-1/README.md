@@ -1,60 +1,27 @@
-Catálogo de Recomendações
-Descrição da Aplicação
-Sistema web completo para cadastro, listagem e gerenciamento de recomendações de obras (músicas, filmes, séries, livros, jogos e podcasts). A aplicação demonstra a containerização e orquestração de múltiplos serviços utilizando Docker Compose, com isolamento de rede, persistência de dados e segurança através de Proxy Reverso.
-Tema Escolhido
-Catálogo de Recomendações - Uma aplicação que permite aos usuários adicionar e visualizar suas obras favoritas, com categorização e observações pessoais.
-Arquitetura
-A aplicação é composta por três serviços containerizados:
-Serviço
-Tecnologia
-Função
-Frontend
-Nginx + HTML/CSS/JavaScript
-Interface web responsiva com Proxy Reverso
-Backend
-Node.js + Express
-API REST (acessível apenas via Nginx)
-Banco de Dados
-PostgreSQL 15
-Persistência de dados em volume nomeado
-Isolamento de Rede e Segurança
-A aplicação utiliza duas redes isoladas e implementa Proxy Reverso para máxima segurança:
-rede_front (rede externa): Conecta Frontend e Backend
-rede_db (rede interna): Conecta Backend e Banco de Dados com internal: true
-Fluxo de Comunicação:
-Plain Text
-Navegador (Host)
-    ↓
-    localhost:8080 (ÚNICA porta exposta)
-    ↓
-Frontend (Nginx com Proxy Reverso)
-    ├→ /                    → Serve index.html
-    └→ /api/*               → Repassa para Backend (http://backend:3000 )
-         ↓
-    Backend (SEM porta exposta para o host)
-         ↓
-    rede_db (interna)
-         ↓
-    PostgreSQL (SEM porta exposta)
-Benefícios da Implementação
-✅ Segurança Máxima: Apenas a porta 8080 é exposta. Backend e Banco de Dados são completamente inacessíveis de fora.
+Emanuella Bedim Zaniolo - exercicio 1 REDES
+# Catálogo de Recomendações
 
-✅ Isolamento Total: Redes separadas garantem que Frontend não acessa Banco de Dados.
+Sistema simples de cadastro, listagem, edição e remoção de recomendações (filmes, séries, músicas, livros, jogos e podcasts).
 
-✅ Proxy Reverso: Nginx gerencia toda a comunicação com o Backend.
+## Como rodar
+1. Abra o terminal na raiz do projeto (pasta `exercicio-1`).
+2. Execute o comando: `docker compose up -d`
+3. Acesse no navegador: `http://localhost:8080`
 
-✅ Persistência: Volume nomeado garante dados após restart.
-Requisitos Técnicos Atendidos
-✅ Frontend: Container com Dockerfile próprio, Proxy Reverso implementado
+## Arquitetura
+- **Frontend (Nginx)**: interface web em HTML/JS, servida em `http://localhost:8080`. O próprio Nginx faz
+  o *proxy reverso* das chamadas `/api/*` para o container do backend (`http://backend:3000`), usando o
+  DNS interno do Docker — o navegador nunca acessa o backend diretamente.
+- **Backend (Node.js/Express)**: API com CRUD completo (`GET`, `POST`, `PUT`, `DELETE` em `/api/recomendacoes`).
+- **Banco de Dados (PostgreSQL)**: persiste os dados no volume nomeado `db_data`.
 
-✅ Backend: Container com endpoints CRUD (GET, POST), SEM porta exposta
+## Redes
+- `rede_front`: conecta `frontend` e `backend`.
+- `rede_db` (`internal: true`): conecta `backend` e `db`, sem saída para fora do cluster de containers.
 
-✅ Banco de Dados: Imagem oficial PostgreSQL com volume nomeado
+O `backend` participa das duas redes, servindo de intermediário. O `db` não expõe nenhuma porta para o
+host e não é acessível a partir do `frontend` (redes diferentes).
 
-✅ Docker Compose: Arquivo único com três serviços
-
-✅ Isolamento de Rede: Redes separadas com internal: true
-
-✅ Persistência: Dados mantidos após docker compose down e up
-
-✅ Porta Única Exposta: Apenas 8080 (Frontend)
+## Persistência
+Os dados ficam no volume nomeado `db_data`. Após `docker compose down` seguido de `docker compose up`,
+os registros cadastrados continuam disponíveis.
