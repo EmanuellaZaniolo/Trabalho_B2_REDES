@@ -51,6 +51,16 @@ app.post('/api/recomendacoes', async (req, res) => {
 });
 
 // Inicia o servidor
+// Teste de conexão com o banco de dados
+pool.connect((err, client, release) => {
+    if (err) {
+        return console.error('Erro ao conectar ao banco de dados:', err.stack);
+    }
+    console.log('Conexão com o banco de dados estabelecida com sucesso! 🐘');
+    release();
+});
+
+// Inicia o servidor
 app.listen(PORT, () => {
     console.log(`Servidor de Recomendações rodando na porta ${PORT} 🚀`);
 });
