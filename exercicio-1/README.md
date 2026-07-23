@@ -9,7 +9,7 @@ Sistema simples de cadastro, listagem, edição e remoção de recomendações (
 3. Acesse no navegador: `http://localhost:8080`
 
 ## Arquitetura
-- **Frontend (Nginx)**: interface web em HTML/JS, servida em `http://localhost:8080`. O próprio Nginx faz
+- **Frontend (Nginx)**: interface web em HTML/JS, em `http://localhost:8080`. O próprio Nginx faz
   o *proxy reverso* das chamadas `/api/*` para o container do backend (`http://backend:3000`), usando o
   DNS interno do Docker — o navegador nunca acessa o backend diretamente.
 - **Backend (Node.js/Express)**: API com CRUD completo (`GET`, `POST`, `PUT`, `DELETE` em `/api/recomendacoes`).

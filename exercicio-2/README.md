@@ -8,21 +8,13 @@ acessível de qualquer navegador.
 
 ## Como executar
 
-1. Copie o arquivo de exemplo e ajuste a senha do administrador:
-   ```bash
-   cp .env.example .env
-   # edite o .env e troque LD_SUPERUSER_PASSWORD por uma senha sua
-   ```
-2. Na raiz desta pasta, execute:
+
+1. Na raiz desta pasta, execute:
    ```bash
    docker compose up -d
    ```
-3. Acesse a aplicação em: `http://localhost:9090`
-4. Faça login com o usuário administrador definido no `.env`.
-
-O único passo manual é o preenchimento prévio do `.env` (copiar do `.env.example`), conforme previsto no
-enunciado. O usuário administrador é criado automaticamente na primeira inicialização a partir das
-variáveis definidas nesse arquivo.
+2. Acesse a aplicação em: `http://localhost:9090`
+3. Faça login com o usuário administrador definido no `.env`.
 
 ## Configurações realizadas
 
